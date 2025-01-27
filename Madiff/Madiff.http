@@ -1,0 +1,6 @@
+@Madiff_HostAddress = http://localhost:5272
+
+GET {{Madiff_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
