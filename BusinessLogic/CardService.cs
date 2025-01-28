@@ -2,7 +2,7 @@
 {
     public class CardService
     {
-        private readonly Dictionary<string, Dictionary<string, CardDetails>> _userCards = CreateSampleUserCards();
+        internal readonly Dictionary<string, Dictionary<string, CardDetails>> _userCards = CreateSampleUserCards();
 
         public async Task<CardDetails?> GetCardDetails(string userId, string cardNumber)
         {
@@ -17,10 +17,15 @@
             return cardDetails;
         }
 
-        public IReadOnlyCollection<CardAction> GetPermittedActions(CardDetails cardDetails)
+        public async Task<IReadOnlyCollection<CardAction>> GetPermittedActions(string userId, string cardNumber)
         {
-            var allActions = CardAction.Actions;
+            var cardDetails = await GetCardDetails(userId, cardNumber);
+            if (cardDetails == null)
+            {
+                return Array.Empty<CardAction>();
+            }
 
+            var allActions = CardAction.Actions;
             var permittedActions = allActions.Where(x => x.actionAllowed(cardDetails)).ToList();
 
             return permittedActions;

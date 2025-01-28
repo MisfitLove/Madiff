@@ -27,14 +27,7 @@ namespace Madiff.Controllers
         [ActionName("GetPermittedActions")]
         public async Task<IReadOnlyCollection<CardAction>> GetCardActions(string userId, string cardNumber)
         {
-            var cardDetails = await cardService.GetCardDetails(userId, cardNumber);
-            
-            if (cardDetails == null) 
-            {
-                return null; 
-            }
-            
-            var permittedActions = cardService.GetPermittedActions(cardDetails);
+            var permittedActions = await cardService.GetPermittedActions(userId, cardNumber);
 
             return permittedActions;
         }
